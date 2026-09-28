@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Modules Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
 
+    <h1>HTML Modules & Custom Elements Demo</h1>
+
+    <!-- 1. Using a Custom Web Component (HTML Module) -->
+    <user-card name="Jane Doe" role="Frontend Developer"></user-card>
+    <user-card name="John Smith" role="UX Designer"></user-card>
+
+    <!-- 2. Web Component Definition Script -->
+    <script>
+        class UserCard extends HTMLElement {
+            constructor() {
+                super();
+                // Attach Shadow DOM for component encapsulation
+                const shadow = this.attachShadow({ mode: 'open' });
+
+                // Define component template and internal styles
+                shadow.innerHTML = `
+                    <style>
+                        .card {
+                            border: 1px solid #ccc;
+                            border-radius: 8px;
+                            padding: 1rem;
+                            margin-bottom: 1rem;
+                            background-color: #f9f9f9;
+                        }
+                        h3 {
+                            margin: 0 0 0.5rem 0;
+                            color: #2c3e50;
+                        }
+                        p {
+                            margin: 0;
+                            color: #666;
+                        }
+                    </style>
+                    <div class="card">
+                        <h3>${this.getAttribute('name') || 'Default Name'}</h3>
+                        <p>${this.getAttribute('role') || 'Default Role'}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Register the custom element tag name
+        customElements.define('user-card', UserCard);
+    </script>
+
+    <!-- 3. ES6 JavaScript Module Script -->
+    <script type="module">
+        // JavaScript written here runs as a module (strict mode, scoped variables)
+        import { logMessage } from './utils.js'; // Requires a local web server to import externally
+
+        const message = "JavaScript Module loaded successfully!";
+        console.log(message);
+    </script>
+
+</body>
+</html>
